@@ -27,11 +27,22 @@ namespace WandelAppWeb.Controllers
             return db.ReturnSingleString("SELECT [Name] FROM [dbo].[User] WHERE [Id] = " + id);
         }
 
+        // GET: api/User/CheckIfUserExists?username=x&password=y
+        [Route("api/user/CheckIfUserExists")]
         [HttpGet]
-        public bool LogIn(string username, string password)
+        public bool CheckIfUserExists(string username, string password)
         {
             // Search user in db
             return db.ReturnSingleBoolean("SELECT [Id] FROM [dbo].[User] WHERE [Username] = '" + username + "' AND [Password] = '" + password + "'");
+        }
+
+        // GET: api/User/LogIn?username=x&password=y
+        [Route("api/user/LogIn")]
+        [HttpGet]
+        public Models.User LogIn(string username, string password)
+        {
+            // Retrieve User as json from db
+            return db.ReturnUser("SELECT * FROM [dbo].[User] WHERE [Username] = '" + username + "' AND [Password] = '" + password + "'");
         }
 
         // DELETE: api/User/DeleteUser

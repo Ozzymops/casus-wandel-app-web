@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WandelAppWeb.Models
 {
-    public enum Hills { None, Sloped, Steep };
+    public enum HillType { None, Sloped, Steep };
     public enum ForestDensity { None, Thin, Thick };
     public enum RouteFlatness { Flat, Bumpy };
     public enum RoadSigns { None, Some, Many };
@@ -14,7 +14,7 @@ namespace WandelAppWeb.Models
     {
         public int Id { get; set; }
         public int Length { get; set; }
-        public Hills HillType { get; set; }
+        public HillType HillType { get; set; }
         public bool Marshiness { get; set; }
         public ForestDensity ForestDensity { get; set; }
         public RouteFlatness RouteFlatness { get; set; }
