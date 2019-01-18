@@ -6,11 +6,23 @@ using System.Web;
 
 namespace WandelAppWeb.Models
 {
+    /// <summary>
+    /// Database contains the connection string for the database and contains some queries.
+    /// </summary>
     public class Database
     {
+        /// <summary>
+        /// A string that contains everything you need to create a connection to the database.
+        /// </summary>
         private string connectionString = "Data Source = localhost; Initial Catalog = WandelAppDb; Integrated Security = True";
 
         #region GET
+        /// <summary>
+        /// Return a single boolean from the query results.
+        /// Check if there are any results from the query.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>true or false</returns>
         public bool ReturnSingleBoolean(string query)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -38,6 +50,12 @@ namespace WandelAppWeb.Models
             return false;
         }
 
+        /// <summary>
+        /// Return a single string from the query results.
+        /// Will take the first result available.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>string</returns>
         public string ReturnSingleString(string query)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -65,6 +83,12 @@ namespace WandelAppWeb.Models
             return null;
         }
 
+        /// <summary>
+        /// Return a single int from the query results.
+        /// Will take the first result available.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>int</returns>
         public int ReturnSingleInt(string query)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -92,6 +116,12 @@ namespace WandelAppWeb.Models
             return -1;
         }
 
+        /// <summary>
+        /// Return a single User from the query results.
+        /// Will take the first available, if multiple return.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>User</returns>
         public User ReturnUser(string query)
         {
             User user;
@@ -120,6 +150,11 @@ namespace WandelAppWeb.Models
             return null;
         }
 
+        /// <summary>
+        /// Return the Preferences of a User.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>Preferences</returns>
         public Preferences ReturnPreferencesOfUser(string query)
         {
             Preferences preferences;
@@ -139,6 +174,43 @@ namespace WandelAppWeb.Models
                                                                      Marshiness = reader.GetBoolean(3), ForestDensity = (ForestDensity)reader.GetInt32(4),
                                                                      RouteFlatness = (RouteFlatness)reader.GetInt32(5), RouteAsphalted = reader.GetBoolean(6),
                                                                      RouteHardened = reader.GetBoolean(7), RoadSigns = (RoadSigns)reader.GetInt32(8) };
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    // ignore
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Return the route corresponding to the query.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>Route</returns>
+        public Route ReturnRoute(string query)
+        {
+            Route route;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            return route = new Route()
+                            {
+                                Id = reader.GetInt32(0)
+                                // Add rest, also fill Route.cs
+                            };
                         }
                     }
                 }

@@ -5,6 +5,9 @@ using System.Web;
 
 namespace WandelAppWeb.Models
 {
+    /// <summary>
+    /// Enumerables to use for Route and Preferences.
+    /// </summary>
     public enum HillType { None, Sloped, Steep };
     public enum ForestDensity { None, Thin, Thick };
     public enum RouteFlatness { Flat, Bumpy };
