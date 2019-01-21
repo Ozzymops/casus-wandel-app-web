@@ -137,7 +137,7 @@ namespace WandelAppWeb.Models
                     {
                         if (reader.HasRows)
                         {
-                            return user = new User() { Id = reader.GetInt32(0), Name = reader.GetString(1), Username = reader.GetString(2), Password = reader.GetString(3), Preferences = ReturnPreferencesOfUser("SELECT * FROM [dbo].[Preferences] WHERE [Id] = " + reader.GetInt32(0)) };
+                            return user = new User() { Id = reader.GetInt32(0), Name = reader.GetString(1), Username = reader.GetString(2), Password = reader.GetString(3) };
                         }
                     }
                 }
