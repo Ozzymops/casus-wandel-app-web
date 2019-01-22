@@ -12,16 +12,48 @@ namespace WandelAppWeb.Controllers
     /// </summary>
     public class RouteController : ApiController
     {
-        // GET: api/Route
-        public IEnumerable<string> Get()
+        private Models.Database db = new Models.Database();
+
+        /// <summary>
+        /// GET: api/Route/GetRoute?id=1 
+        /// Return a route by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A name</returns>
+        [HttpGet]
+        [Route("api/route/GetRoute")]
+        public Models.Route GetRoute(int id)
         {
-            return new string[] { "value1", "value2" };
+            // Get name based off of Id
+            return db.ReturnRoute("SELECT * FROM [Route] WHERE [Id] = " + id);
         }
 
-        // GET: api/Route/5
-        public string Get(int id)
+        /// <summary>
+        /// GET: api/Route/GetRouteList?id=1 
+        /// Return a list of routes.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A name</returns>
+        [HttpGet]
+        [Route("api/route/GetRouteList")]
+        public List<Models.Route> GetRoutesOfUser(int id)
         {
-            return "value";
+            // Get name based off of Id
+            return db.ReturnRouteList("SELECT * FROM [Route] WHERE [OwnerId] = " + id);
+        }
+
+        /// <summary>
+        /// GET: api/Route/GetRoute?id=1 
+        /// Return the name of a found User.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A name</returns>
+        [HttpGet]
+        [Route("api/route/GetRoutesByDifficulty")]
+        public List<Models.Route> GetRoutesByDifficulty(int difficulty)
+        {
+            // Get name based off of Id
+            return db.ReturnRouteList("SELECT * FROM [Route] WHERE [Difficulty] >= " + (difficulty-1) + "AND [Difficulty] <= " + (difficulty+1));
         }
 
         // POST: api/Route

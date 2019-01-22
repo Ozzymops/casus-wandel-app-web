@@ -25,7 +25,7 @@ INSERT INTO [User] SELECT 'Typ', 'Typ', 'ghi';
 CREATE TABLE [dbo].[Preferences](
 [Id] INT IDENTITY (1, 1),
 [OwnerId] INT NOT NULL,
-[Length] INT NOT NULL,
+[Length] DECIMAL(9,6) NOT NULL,
 [HillType] INT NOT NULL,
 [Marshiness] BIT NOT NULL,
 [ForestDensity] INT NOT NULL,

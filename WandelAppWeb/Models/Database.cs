@@ -208,11 +208,74 @@ namespace WandelAppWeb.Models
                         {
                             return route = new Route()
                             {
-                                Id = reader.GetInt32(0)
-                                // Add rest, also fill Route.cs
+                                Id = reader.GetInt32(0),
+                                OwnerId = reader.GetInt32(1),
+                                Difficulty = reader.GetInt32(2),
+                                Name = reader.GetString(3),
+                                Length = reader.GetDecimal(4),
+                                StartLong = reader.GetDecimal(5),
+                                StartLat = reader.GetDecimal(6),
+                                EndLong = reader.GetDecimal(7),
+                                EndLat = reader.GetDecimal(8),
+                                Marshiness = reader.GetBoolean(9),
+                                RouteAsphalted = reader.GetBoolean(10),
+                                HillType = (HillType)reader.GetInt32(11),
+                                ForestDensity = (ForestDensity)reader.GetInt32(12),
+                                RouteFlatness = (RouteFlatness)reader.GetInt32(13)
                             };
                         }
                     }
+                }
+                catch (Exception e)
+                {
+                    // ignore
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Return a list of routes corresponding to the query.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>Route list</returns>
+        public List<Route> ReturnRouteList(string query)
+        {
+            List<Route> routeList = new List<Route>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            Route route = new Route()
+                            {
+                                Id = reader.GetInt32(0),
+                                OwnerId = reader.GetInt32(1),
+                                Difficulty = reader.GetInt32(2),
+                                Name = reader.GetString(3),
+                                Length = reader.GetDecimal(4),
+                                StartLong = reader.GetDecimal(5),
+                                StartLat = reader.GetDecimal(6),
+                                EndLong = reader.GetDecimal(7),
+                                EndLat = reader.GetDecimal(8),
+                                Marshiness = reader.GetBoolean(9),
+                                RouteAsphalted = reader.GetBoolean(10),
+                                HillType = (HillType)reader.GetInt32(11),
+                                ForestDensity = (ForestDensity)reader.GetInt32(12),
+                                RouteFlatness = (RouteFlatness)reader.GetInt32(13)
+                            };
+                            routeList.Add(route);
+                        }
+                    }
+                    return routeList;
                 }
                 catch (Exception e)
                 {
