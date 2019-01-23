@@ -29,6 +29,18 @@ namespace WandelAppWeb.Controllers
         }
 
         /// <summary>
+        /// Return all available Routes
+        /// </summary>
+        /// <returns>Route list</returns>
+        [HttpGet]
+        [Route("api/route/GetAllRoutes")]
+        public List<Models.Route> GetAllRoutes()
+        {
+            // return all Routes
+            return db.ReturnRouteList("SELECT * FROM [Route]");
+        }
+
+        /// <summary>
         /// GET: api/Route/GetRouteList?id=1 
         /// Return a list of routes.
         /// </summary>
