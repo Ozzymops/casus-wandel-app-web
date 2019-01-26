@@ -238,7 +238,9 @@ namespace WandelAppWeb.Models
                                 HillType = (HillType)reader.GetInt32(11),
                                 ForestDensity = (ForestDensity)reader.GetInt32(12),
                                 RouteFlatness = (RouteFlatness)reader.GetInt32(13),
-                                RoadSigns = (RoadSigns)reader.GetInt32(14)
+                                RoadSigns = (RoadSigns)reader.GetInt32(14),
+                                POIList = this.ReturnPOIList("SELECT * FROM [POI] WHERE [RouteId] = " + reader.GetInt32(0)),
+                                SequenceList = this.ReturnRouteSequenceList("SELECT * FROM [RouteSequence] WHERE [RouteId] = " + reader.GetInt32(0))
                             };
                         }
                     }
@@ -288,7 +290,9 @@ namespace WandelAppWeb.Models
                                 HillType = (HillType)reader.GetInt32(11),
                                 ForestDensity = (ForestDensity)reader.GetInt32(12),
                                 RouteFlatness = (RouteFlatness)reader.GetInt32(13),
-                                RoadSigns = (RoadSigns)reader.GetInt32(14)
+                                RoadSigns = (RoadSigns)reader.GetInt32(14),
+                                POIList = this.ReturnPOIList("SELECT * FROM [POI] WHERE [RouteId] = " + reader.GetInt32(0)),
+                                SequenceList = this.ReturnRouteSequenceList("SELECT * FROM [RouteSequence] WHERE [RouteId] = " + reader.GetInt32(0))
                             };
                             routeList.Add(route);
                         }
