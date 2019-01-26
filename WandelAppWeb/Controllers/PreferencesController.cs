@@ -12,10 +12,34 @@ namespace WandelAppWeb.Controllers
     /// </summary>
     public class PreferencesController : ApiController
     {
-        // GET: api/Preferences
-        public IEnumerable<string> Get()
+        private Models.Database db = new Models.Database();
+
+        /// <summary>
+        /// GET: api/Preferences/GetPreferences?id=1 
+        /// Return a Preferences object by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Preferences</returns>
+        [HttpGet]
+        [Route("api/Preferences/GetPreferences")]
+        public Models.Preferences GetPreferences(int id)
         {
-            return new string[] { "value1", "value2" };
+            // Get name based off of Id
+            return db.ReturnPreferences("SELECT * FROM [Preferences] WHERE [Id] = " + id);
+        }
+
+        /// <summary>
+        /// GET: api/Preferences/GetPreferencesOfOwner?id=1 
+        /// Return a Preferences object by its owner's id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Preferences</returns>
+        [HttpGet]
+        [Route("api/Preferences/GetPreferencesOfOwner")]
+        public Models.Preferences GetPreferencesOfOwner(int ownerId)
+        {
+            // Get name based off of Id
+            return db.ReturnPreferences("SELECT * FROM [Preferences] WHERE [OwnerId] = " + ownerId);
         }
 
         // GET: api/Preferences/5
