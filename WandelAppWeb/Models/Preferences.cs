@@ -16,13 +16,13 @@ namespace WandelAppWeb.Models
     public class Preferences
     {
         public int Id { get; set; }
-        public int Length { get; set; }
+        public int OwnerId { get; set; }
+        public decimal Length { get; set; }
         public HillType HillType { get; set; }
         public bool Marshiness { get; set; }
         public ForestDensity ForestDensity { get; set; }
         public RouteFlatness RouteFlatness { get; set; }
         public bool RouteAsphalted { get; set; }
-        public bool RouteHardened { get; set; }
         public RoadSigns RoadSigns { get; set; }
     }
 }

@@ -170,10 +170,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Database.cs" />
+    <Compile Include="Models\POI.cs" />
     <Compile Include="Models\Preferences.cs" />
     <Compile Include="Models\Route.cs" />
+    <Compile Include="Models\RouteSequence.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
