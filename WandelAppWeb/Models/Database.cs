@@ -11,6 +11,8 @@ namespace WandelAppWeb.Models
     /// </summary>
     public class Database
     {
+        Models.Logger l = new Models.Logger();
+
         /// <summary>
         /// A string that contains everything you need to create a connection to the database.
         /// </summary>
@@ -43,7 +45,7 @@ namespace WandelAppWeb.Models
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnSingleBoolean: " + e);
                     return false;
                 }
             }
@@ -76,7 +78,7 @@ namespace WandelAppWeb.Models
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnSingleString: " + e);
                     return null;
                 }
             }
@@ -109,7 +111,7 @@ namespace WandelAppWeb.Models
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnSingleInt: " + e);
                     return -1;
                 }
             }
@@ -137,13 +139,19 @@ namespace WandelAppWeb.Models
                     {
                         if (reader.HasRows)
                         {
-                            return user = new User() { Id = reader.GetInt32(0), Name = reader.GetString(1), Username = reader.GetString(2), Password = reader.GetString(3) };
+                            return user = new User()
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Username = reader.GetString(2),
+                                Password = reader.GetString(3)
+                            };
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnUser: " + e);
                     return null;
                 }
             }
@@ -151,11 +159,11 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Return the Preferences of a User.
+        /// Return a Preferences object from db corresponding to the query.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Preferences</returns>
-        public Preferences ReturnPreferencesOfUser(string query)
+        public Preferences ReturnPreferences(string query)
         {
             Preferences preferences;
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -170,16 +178,24 @@ namespace WandelAppWeb.Models
                     {
                         if (reader.HasRows)
                         {
-                            return preferences = new Preferences() { Id = reader.GetInt32(0), Length = reader.GetInt32(1), HillType = (HillType)reader.GetInt32(2),
-                                                                     Marshiness = reader.GetBoolean(3), ForestDensity = (ForestDensity)reader.GetInt32(4),
-                                                                     RouteFlatness = (RouteFlatness)reader.GetInt32(5), RouteAsphalted = reader.GetBoolean(6),
-                                                                     RouteHardened = reader.GetBoolean(7), RoadSigns = (RoadSigns)reader.GetInt32(8) };
+                            return preferences = new Preferences()
+                            {
+                                Id = reader.GetInt32(0),
+                                OwnerId = reader.GetInt32(1),
+                                Length = reader.GetDecimal(2),
+                                HillType = (HillType)reader.GetInt32(3),
+                                Marshiness = reader.GetBoolean(4),
+                                ForestDensity = (ForestDensity)reader.GetInt32(5),
+                                RouteFlatness = (RouteFlatness)reader.GetInt32(6),
+                                RouteAsphalted = reader.GetBoolean(7),
+                                RoadSigns = (RoadSigns)reader.GetInt32(8)
+                            };
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnPreferences: " + e);
                     return null;
                 }
             }
@@ -221,14 +237,15 @@ namespace WandelAppWeb.Models
                                 RouteAsphalted = reader.GetBoolean(10),
                                 HillType = (HillType)reader.GetInt32(11),
                                 ForestDensity = (ForestDensity)reader.GetInt32(12),
-                                RouteFlatness = (RouteFlatness)reader.GetInt32(13)
+                                RouteFlatness = (RouteFlatness)reader.GetInt32(13),
+                                RoadSigns = (RoadSigns)reader.GetInt32(14)
                             };
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnRoute: " + e);
                     return null;
                 }
             }
@@ -270,7 +287,8 @@ namespace WandelAppWeb.Models
                                 RouteAsphalted = reader.GetBoolean(10),
                                 HillType = (HillType)reader.GetInt32(11),
                                 ForestDensity = (ForestDensity)reader.GetInt32(12),
-                                RouteFlatness = (RouteFlatness)reader.GetInt32(13)
+                                RouteFlatness = (RouteFlatness)reader.GetInt32(13),
+                                RoadSigns = (RoadSigns)reader.GetInt32(14)
                             };
                             routeList.Add(route);
                         }
@@ -279,7 +297,173 @@ namespace WandelAppWeb.Models
                 }
                 catch (Exception e)
                 {
-                    // ignore
+                    l.WriteToLog("Error - ReturnPreferences: " + e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Return a POI object.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>POI</returns>
+        public POI ReturnPOI(string query)
+        {
+            POI poi;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            return poi = new POI()
+                            {
+                                Id = reader.GetInt32(0),
+                                RouteId = reader.GetInt32(1),
+                                Name = reader.GetString(2),
+                                Description = reader.GetString(3),
+                                Long = reader.GetDecimal(4),
+                                Lat = reader.GetDecimal(5)
+                            };
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - ReturnPOI: " + e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Return a list of POI corresponding to the query.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>POI list</returns>
+        public List<POI> ReturnPOIList(string query)
+        {
+            List<POI> poiList = new List<POI>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            POI poi = new POI()
+                            {
+                                Id = reader.GetInt32(0),
+                                RouteId = reader.GetInt32(1),
+                                Name = reader.GetString(2),
+                                Description = reader.GetString(3),
+                                Long = reader.GetDecimal(4),
+                                Lat = reader.GetDecimal(5)
+                            };
+                            poiList.Add(poi);
+                        }
+                    }
+                    return poiList;
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - ReturnPOIList: " + e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Return a RouteSequence object.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>RouteSequence</returns>
+        public RouteSequence ReturnRouteSequence(string query)
+        {
+            RouteSequence routeSequence;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            return routeSequence = new RouteSequence()
+                            {
+                                Id = reader.GetInt32(0),
+                                RouteId = reader.GetInt32(1),
+                                StepNumber = reader.GetInt32(2),
+                                Long = reader.GetDecimal(3),
+                                Lat = reader.GetDecimal(4)
+                            };
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - ReturnRouteSequence: " + e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Return a list of RouteSequences corresponding to the query.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>RouteSequence list</returns>
+        public List<RouteSequence> ReturnRouteSequenceList(string query)
+        {
+            List<RouteSequence> routeSequenceList = new List<RouteSequence>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (reader.HasRows)
+                        {
+                            RouteSequence routeSequence = new RouteSequence()
+                            {
+                                Id = reader.GetInt32(0),
+                                RouteId = reader.GetInt32(1),
+                                StepNumber = reader.GetInt32(2),
+                                Long = reader.GetDecimal(3),
+                                Lat = reader.GetDecimal(4)
+                            };
+                            routeSequenceList.Add(routeSequence);
+                        }
+                    }
+                    return routeSequenceList;
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - ReturnRouteSequenceList: " + e);
                     return null;
                 }
             }
