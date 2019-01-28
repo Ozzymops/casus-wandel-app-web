@@ -44,7 +44,7 @@ INSERT INTO [Preferences] SELECT 2, 2, 1, 1, 1, 1, 1, 1;
 CREATE TABLE [dbo].[Route](
 [Id] INT IDENTITY (1, 1),
 [OwnerId] INT NOT NULL,
-[Difficulty] INT NOT NULL,
+[Difficulty] FLOAT NOT NULL,
 [Name] NVARCHAR(100) NOT NULL,
 [Length] DECIMAL(9,6) NOT NULL,
 [StartLong] DECIMAL(9,6) NOT NULL,
