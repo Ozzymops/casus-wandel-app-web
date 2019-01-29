@@ -474,5 +474,87 @@ namespace WandelAppWeb.Models
             return null;
         }
         #endregion
+        #region POST
+        /// <summary>
+        /// Add a route to the database
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public string AddRoute(Models.Route route)
+        {
+            Models.Logger l = new Models.Logger();
+            l.WriteToLog("Addroute!");
+
+            string query = ("INSERT INTO [Route] (OwnerId, Difficulty, Name, Length, StartLong, StartLat, EndLong, EndLat, Marshiness, RouteAsphalted, HillType, ForestDensity, RouteFlatness, RoadSigns) " +
+                            "VALUES(@ownerId, @diff, @name, @length, @slong, @slat, @elong, @elat, @marsh, @asph, @hill, @forest, @flat, @sign)");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    
+                    // Create parameters
+                    SqlParameter ownerIdParam = new SqlParameter("@ownerId", System.Data.SqlDbType.Int, 255);
+                    SqlParameter diffParam = new SqlParameter("@diff", System.Data.SqlDbType.Int, 255);
+                    SqlParameter nameParam = new SqlParameter("@name", System.Data.SqlDbType.NVarChar, 255);
+                    SqlParameter lengthParam = new SqlParameter("@length", System.Data.SqlDbType.Decimal, 255);
+                    SqlParameter slongParam = new SqlParameter("@slong", System.Data.SqlDbType.Decimal, 255);
+                    SqlParameter slatParam = new SqlParameter("@slat", System.Data.SqlDbType.Decimal, 255);
+                    SqlParameter elongParam = new SqlParameter("@elong", System.Data.SqlDbType.Decimal, 255);
+                    SqlParameter elatParam = new SqlParameter("@elat", System.Data.SqlDbType.Decimal, 255);
+                    SqlParameter marshParam = new SqlParameter("@marsh", System.Data.SqlDbType.Bit, 1);
+                    SqlParameter asphParam = new SqlParameter("@asph", System.Data.SqlDbType.Bit, 1);
+                    SqlParameter hillParam = new SqlParameter("@hill", System.Data.SqlDbType.Bit, 1);
+                    SqlParameter forestParam = new SqlParameter("@forest", System.Data.SqlDbType.Bit, 1);
+                    SqlParameter flatParam = new SqlParameter("@flat", System.Data.SqlDbType.Bit, 1);
+                    SqlParameter signParam = new SqlParameter("@sign", System.Data.SqlDbType.Bit, 1);
+
+
+                    // Fill parameters
+                    ownerIdParam.Value = route.OwnerId;
+                    diffParam.Value = route.Difficulty;
+                    nameParam.Value = route.Name;
+                    lengthParam.Value = route.Length;
+                    slongParam.Value = route.StartLong;
+                    slatParam.Value = route.StartLat;
+                    elongParam.Value = route.EndLong;
+                    elatParam.Value = route.EndLat;
+                    marshParam.Value = Convert.ToInt32(route.Marshiness);
+                    asphParam.Value = Convert.ToInt32(route.RouteAsphalted);
+                    hillParam.Value = Convert.ToInt32(route.HillType);
+                    forestParam.Value = Convert.ToInt32(route.ForestDensity);
+                    flatParam.Value = Convert.ToInt32(route.RouteFlatness);
+                    signParam.Value = Convert.ToInt32(route.RoadSigns);
+
+                    // Add parameters
+                    cmd.Parameters.Add(ownerIdParam);
+                    cmd.Parameters.Add(diffParam);
+                    cmd.Parameters.Add(nameParam);
+                    cmd.Parameters.Add(lengthParam);
+                    cmd.Parameters.Add(slongParam);
+                    cmd.Parameters.Add(slatParam);
+                    cmd.Parameters.Add(elongParam);
+                    cmd.Parameters.Add(elatParam);
+                    cmd.Parameters.Add(marshParam);
+                    cmd.Parameters.Add(asphParam);
+                    cmd.Parameters.Add(hillParam);
+                    cmd.Parameters.Add(forestParam);
+                    cmd.Parameters.Add(flatParam);
+                    cmd.Parameters.Add(signParam);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - AddRoute: " + e);
+                    return "shit";
+                }
+            }
+            return "uhh";
+        }
+
+        #endregion
     }
 }

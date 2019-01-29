@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -55,7 +56,7 @@ namespace WandelAppWeb.Controllers
         }
 
         /// <summary>
-        /// GET: api/Route/GetRoute?id=1 
+        /// GET: api/Route/GetRoutesByDifficulty?difficulty=1
         /// Return the name of a found User.
         /// </summary>
         /// <param name="id"></param>
@@ -68,19 +69,18 @@ namespace WandelAppWeb.Controllers
             return db.ReturnRouteList("SELECT * FROM [Route] WHERE [Difficulty] >= " + (difficulty-1) + "AND [Difficulty] <= " + (difficulty+1));
         }
 
-        // POST: api/Route
-        public void Post([FromBody]string value)
+        [HttpPost]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [Route("api/route/AddRoute")]
+        public string AddRoute(string json)
         {
-        }
-
-        // PUT: api/Route/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Route/5
-        public void Delete(int id)
-        {
+            // decode json
+            Models.Route route = JsonConvert.DeserializeObject<Models.Route>(json);
+            Models.Logger l = new Models.Logger();
+            l.WriteToLog(route.Name);
+            //return db.AddRoute ("INSERT INTO [Route] (OwnerId, Difficulty, Name, Length, StartLong, StartLat, EndLong, EndLat, Marshiness, RouteAsphalted, HillType, ForestDensity, RouteFlatness, RoadSigns) " +
+            //                   "VALUES(" + route.OwnerId + ", '" + route.Difficulty + "', '" + route.Name + "', '" + route.Length + "', '" + route.StartLong + "', '" + route.StartLat + "', '" + route.EndLong + "', '" + route.EndLat + "', 1, 1, 1, 1, 1, 1)");
+            return db.AddRoute(route);
         }
     }
 }
