@@ -226,7 +226,7 @@ namespace WandelAppWeb.Models
                             {
                                 Id = reader.GetInt32(0),
                                 OwnerId = reader.GetInt32(1),
-                                Difficulty = reader.GetInt32(2),
+                                Difficulty = (double)reader.GetDecimal(2),
                                 Name = reader.GetString(3),
                                 Length = reader.GetDecimal(4),
                                 StartLong = reader.GetDecimal(5),
