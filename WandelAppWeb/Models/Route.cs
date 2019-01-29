@@ -7,7 +7,7 @@ namespace WandelAppWeb.Models
 {
     public class Route : Preferences
     {
-        public double Difficulty { get; set; }
+        public int Difficulty { get; set; }
         public string Name { get; set; }
         public decimal StartLong { get; set; }
         public decimal StartLat { get; set; }
