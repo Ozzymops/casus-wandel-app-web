@@ -69,17 +69,21 @@ namespace WandelAppWeb.Controllers
             return db.ReturnRouteList("SELECT * FROM [Route] WHERE [Difficulty] >= " + (difficulty-1) + "AND [Difficulty] <= " + (difficulty+1));
         }
 
+        [HttpGet]
+        [Route("api/route/GetLastId")]
+        public int GetLastId()
+        {
+            return db.ReturnSingleInt("SELECT TOP 1 [Id] FROM [Route] ORDER BY ID DESC");
+        }
+
         [HttpPost]
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [Route("api/route/AddRoute")]
         public string AddRoute(string json)
         {
-            // decode json
             Models.Route route = JsonConvert.DeserializeObject<Models.Route>(json);
             Models.Logger l = new Models.Logger();
             l.WriteToLog(route.Name);
-            //return db.AddRoute ("INSERT INTO [Route] (OwnerId, Difficulty, Name, Length, StartLong, StartLat, EndLong, EndLat, Marshiness, RouteAsphalted, HillType, ForestDensity, RouteFlatness, RoadSigns) " +
-            //                   "VALUES(" + route.OwnerId + ", '" + route.Difficulty + "', '" + route.Name + "', '" + route.Length + "', '" + route.StartLong + "', '" + route.StartLat + "', '" + route.EndLong + "', '" + route.EndLat + "', 1, 1, 1, 1, 1, 1)");
             return db.AddRoute(route);
         }
     }

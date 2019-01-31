@@ -545,14 +545,123 @@ namespace WandelAppWeb.Models
                     cmd.Parameters.Add(signParam);
 
                     cmd.ExecuteNonQuery();
+
+                    AddPOI(route.POIList);
+                    AddStep(route.SequenceList);
                 }
                 catch (Exception e)
                 {
                     l.WriteToLog("Error - AddRoute: " + e);
-                    return "shit";
+                    return "Er is iets fout gegaan bij het opslaan.";
                 }
             }
-            return "uhh";
+            return "Succes! De route is opgeslagen.";
+        }
+
+        /// <summary>
+        /// Add a route step to the database.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
+        public void AddStep(List<Models.RouteSequence> seq)
+        {
+            Models.Logger l = new Models.Logger();
+            l.WriteToLog("AddStep!");
+
+            string query = ("INSERT INTO [RouteSequence] (RouteId, Number, Long, Lat) " +
+                            "VALUES(@routeId, @step, @long, @lat)");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+
+                    foreach (Models.RouteSequence s in seq)
+                    {
+                        SqlCommand cmd = new SqlCommand(query, conn);
+
+                        // Create parameters
+                        SqlParameter routeIdParam = new SqlParameter("@routeId", System.Data.SqlDbType.Int, 255);
+                        SqlParameter stepParam = new SqlParameter("@step", System.Data.SqlDbType.Int, 255);
+                        SqlParameter longParam = new SqlParameter("@long", System.Data.SqlDbType.Decimal, 255);
+                        SqlParameter latParam = new SqlParameter("@lat", System.Data.SqlDbType.Decimal, 255);
+
+                        // Fill parameters
+                        routeIdParam.Value = s.RouteId;
+                        stepParam.Value = s.StepNumber;
+                        longParam.Value = s.Long;
+                        latParam.Value = s.Lat;
+
+                        // Add parameters
+                        cmd.Parameters.Add(routeIdParam);
+                        cmd.Parameters.Add(stepParam);
+                        cmd.Parameters.Add(longParam);
+                        cmd.Parameters.Add(latParam);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - AddStep: " + e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a POI to the database.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
+        public void AddPOI(List<Models.POI> poi)
+        {
+            Models.Logger l = new Models.Logger();
+            l.WriteToLog("AddStep!");
+
+            string query = ("INSERT INTO [POI] (RouteId, Name, Description, Long, Lat) " +
+                            "VALUES(@routeId, @name, @descr, @long, @lat)");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    foreach (Models.POI p in poi)
+                    {
+                        SqlCommand cmd = new SqlCommand(query, conn);
+
+                        // Create parameters
+                        SqlParameter routeIdParam = new SqlParameter("@routeId", System.Data.SqlDbType.Int, 255);
+                        SqlParameter nameParam = new SqlParameter("@name", System.Data.SqlDbType.NVarChar, 255);
+                        SqlParameter descrParam = new SqlParameter("@descr", System.Data.SqlDbType.NVarChar, 255);
+                        SqlParameter longParam = new SqlParameter("@long", System.Data.SqlDbType.Decimal, 255);
+                        SqlParameter latParam = new SqlParameter("@lat", System.Data.SqlDbType.Decimal, 255);
+
+                        // Fill parameters
+                        routeIdParam.Value = p.RouteId;
+                        nameParam.Value = p.Name;
+                        descrParam.Value = p.Description;
+                        longParam.Value = p.Long;
+                        latParam.Value = p.Lat;
+
+                        // Add parameters
+                        cmd.Parameters.Add(routeIdParam);
+                        cmd.Parameters.Add(nameParam);
+                        cmd.Parameters.Add(descrParam);
+                        cmd.Parameters.Add(longParam);
+                        cmd.Parameters.Add(latParam);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    l.WriteToLog("Error - AddStep: " + e);
+                }
+            }
         }
 
         #endregion
