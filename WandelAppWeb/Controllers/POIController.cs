@@ -13,7 +13,7 @@ namespace WandelAppWeb.Controllers
 
         /// <summary>
         /// GET: api/POI/GetPOI?id=1 
-        /// Return a route by its id.
+        /// Return a point-of-interest by its id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>POI</returns>
@@ -26,30 +26,15 @@ namespace WandelAppWeb.Controllers
 
         /// <summary>
         /// GET: api/POI/GetPOIOfRoute?routeId=1 
-        /// Return a route by its id.
+        /// Return a POI bound to a route by a route's id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="routeId"></param>
         /// <returns>POI</returns>
         [HttpGet]
         [Route("api/POI/GetPOIOfRoute")]
         public List<Models.POI> GetPOIOfRoute(int routeId)
         {
             return db.ReturnPOIList("SELECT * FROM [POI] WHERE [RouteId] = " + routeId);
-        }
-
-        // POST: api/POI
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/POI/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/POI/5
-        public void Delete(int id)
-        {
         }
     }
 }

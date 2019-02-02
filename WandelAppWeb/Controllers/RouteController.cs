@@ -8,9 +8,6 @@ using System.Web.Http;
 
 namespace WandelAppWeb.Controllers
 {
-    /// <summary>
-    /// The RouteController contains all available methods for the Route object.
-    /// </summary>
     public class RouteController : ApiController
     {
         private Models.Database db = new Models.Database();
@@ -20,16 +17,16 @@ namespace WandelAppWeb.Controllers
         /// Return a route by its id.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A name</returns>
+        /// <returns>Route</returns>
         [HttpGet]
         [Route("api/route/GetRoute")]
         public Models.Route GetRoute(int id)
         {
-            // Get name based off of Id
             return db.ReturnRoute("SELECT * FROM [Route] WHERE [Id] = " + id);
         }
 
         /// <summary>
+        /// GET: api/Route/GetAllRoutes
         /// Return all available Routes
         /// </summary>
         /// <returns>Route list</returns>
@@ -37,38 +34,27 @@ namespace WandelAppWeb.Controllers
         [Route("api/route/GetAllRoutes")]
         public List<Models.Route> GetAllRoutes()
         {
-            // return all Routes
             return db.ReturnRouteList("SELECT * FROM [Route]");
         }
 
         /// <summary>
-        /// GET: api/Route/GetRouteList?id=1 
-        /// Return a list of routes.
+        /// GET: api/Route/GetRoutesOfUser?id=1 
+        /// Return a list of routes made by a user.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A name</returns>
+        /// <returns>Route list</returns>
         [HttpGet]
-        [Route("api/route/GetRouteList")]
+        [Route("api/route/GetRoutesOfUser")]
         public List<Models.Route> GetRoutesOfUser(int id)
         {
-            // Get name based off of Id
             return db.ReturnRouteList("SELECT * FROM [Route] WHERE [OwnerId] = " + id);
         }
 
         /// <summary>
-        /// GET: api/Route/GetRoutesByDifficulty?difficulty=1
-        /// Return the name of a found User.
+        /// GET: api/Route/GetLastId
+        /// Return the id of the last route in the database.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>A name</returns>
-        [HttpGet]
-        [Route("api/route/GetRoutesByDifficulty")]
-        public List<Models.Route> GetRoutesByDifficulty(int difficulty)
-        {
-            // Get name based off of Id
-            return db.ReturnRouteList("SELECT * FROM [Route] WHERE [Difficulty] >= " + (difficulty-1) + "AND [Difficulty] <= " + (difficulty+1));
-        }
-
+        /// <returns>id</returns>
         [HttpGet]
         [Route("api/route/GetLastId")]
         public int GetLastId()
@@ -76,6 +62,12 @@ namespace WandelAppWeb.Controllers
             return db.ReturnSingleInt("SELECT TOP 1 [Id] FROM [Route] ORDER BY ID DESC");
         }
 
+        /// <summary>
+        /// POST: api/Route/AddRoute?json=...
+        /// Save a route to the database including its sequence and points-of-interest.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns>Status string</returns>
         [HttpPost]
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [Route("api/route/AddRoute")]

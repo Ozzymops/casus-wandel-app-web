@@ -13,7 +13,7 @@ namespace WandelAppWeb.Controllers
 
         /// <summary>
         /// GET: api/RouteSequence/GetRouteSequence?id=1 
-        /// Return a route by its id.
+        /// Return a route sequence by its id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>RouteSequence</returns>
@@ -26,7 +26,7 @@ namespace WandelAppWeb.Controllers
 
         /// <summary>
         /// GET: api/POI/GetRouteSequenceOfRoute?routeId=1 
-        /// Return a route by its id.
+        /// Return a list of route sequences bound to a route.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>RouteSequence list</returns>
@@ -35,21 +35,6 @@ namespace WandelAppWeb.Controllers
         public List<Models.RouteSequence> GetRouteSequenceOfRoute(int routeId)
         {
             return db.ReturnRouteSequenceList("SELECT * FROM [RouteSequence] WHERE [RouteId] = " + routeId);
-        }
-
-        // POST: api/RouteSequence
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/RouteSequence/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/RouteSequence/5
-        public void Delete(int id)
-        {
         }
     }
 }

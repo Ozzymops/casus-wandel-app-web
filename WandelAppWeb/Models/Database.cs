@@ -6,9 +6,6 @@ using System.Web;
 
 namespace WandelAppWeb.Models
 {
-    /// <summary>
-    /// Database contains the connection string for the database and contains some queries.
-    /// </summary>
     public class Database
     {
         Models.Logger l = new Models.Logger();
@@ -18,10 +15,9 @@ namespace WandelAppWeb.Models
         /// </summary>
         private string connectionString = "Data Source = localhost; Initial Catalog = WandelAppDb; Integrated Security = True";
 
-        #region GET
         /// <summary>
         /// Return a single boolean from the query results.
-        /// Check if there are any results from the query.
+        /// Checks if there are any results from the query.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>true or false</returns>
@@ -159,7 +155,8 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Return a Preferences object from db corresponding to the query.
+        /// Return a Preferences object from the query results.
+        /// Returns the first available.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Preferences</returns>
@@ -203,7 +200,8 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Return the route corresponding to the query.
+        /// Return the route object from the query results.
+        /// Takes the first one available.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Route</returns>
@@ -255,7 +253,7 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Return a list of routes corresponding to the query.
+        /// Return a list of routes from the query results.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Route list</returns>
@@ -305,11 +303,11 @@ namespace WandelAppWeb.Models
                     return null;
                 }
             }
-            return null;
         }
 
         /// <summary>
-        /// Return a POI object.
+        /// Return a POI object from the query results.
+        /// Will take the first one available.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>POI</returns>
@@ -350,7 +348,7 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Return a list of POI corresponding to the query.
+        /// Return a list of POI from the query results.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>POI list</returns>
@@ -389,11 +387,11 @@ namespace WandelAppWeb.Models
                     return null;
                 }
             }
-            return null;
         }
 
         /// <summary>
-        /// Return a RouteSequence object.
+        /// Return a RouteSequence object from the query results.
+        /// Will return the first one available.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>RouteSequence</returns>
@@ -433,7 +431,7 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Return a list of RouteSequences corresponding to the query.
+        /// Return a list of RouteSequences from the query results.
         /// </summary>
         /// <param name="query"></param>
         /// <returns>RouteSequence list</returns>
@@ -471,15 +469,13 @@ namespace WandelAppWeb.Models
                     return null;
                 }
             }
-            return null;
         }
-        #endregion
-        #region POST
+
         /// <summary>
-        /// Add a route to the database
+        /// Add a route to the database.
         /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
+        /// <param name="route"></param>
+        /// <returns>Status string</returns>
         public string AddRoute(Models.Route route)
         {
             Models.Logger l = new Models.Logger();
@@ -559,9 +555,9 @@ namespace WandelAppWeb.Models
         }
 
         /// <summary>
-        /// Add a route step to the database.
+        /// Add a route sequence to the database.
         /// </summary>
-        /// <param name="route"></param>
+        /// <param name="seq"></param>
         /// <returns></returns>
         public void AddStep(List<Models.RouteSequence> seq)
         {
@@ -613,7 +609,7 @@ namespace WandelAppWeb.Models
         /// <summary>
         /// Add a POI to the database.
         /// </summary>
-        /// <param name="route"></param>
+        /// <param name="poi"></param>
         /// <returns></returns>
         public void AddPOI(List<Models.POI> poi)
         {
@@ -663,7 +659,5 @@ namespace WandelAppWeb.Models
                 }
             }
         }
-
-        #endregion
     }
 }
